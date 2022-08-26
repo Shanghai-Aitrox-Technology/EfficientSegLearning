@@ -1,0 +1,21 @@
+#!/usr/bin/python3
+
+import os
+import sys
+import warnings
+warnings.filterwarnings('ignore')
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(BASE_DIR)
+
+from Common.utils.config import Config
+from FlareSemiSeg.pipeline_infer.model import FlareInfer
+
+if __name__ == '__main__':
+    config_path = './val_config.yaml'
+    test_config = Config.fromfile(config_path)
+
+    os.environ['CUDA_VISIBLE_DEVICES'] = str(test_config.env.rank)
+
+    pipeline_infer = FlareInfer(test_config)
+    pipeline_infer.run()

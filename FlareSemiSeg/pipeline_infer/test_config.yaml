@@ -1,0 +1,109 @@
+env:
+  rank: 4
+
+data_loader:
+  test_image_dir: '/data/zhangfan/FLARE2022/raw_data/ValidationSet/'
+  test_series_uid_txt: None
+  is_norma_direction: False
+  window_level: [-500, 500]
+  label_index: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ]
+  label_num: [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ]
+  label_name: [ 'liver', 'right kidney', 'spleen', 'pancreas', 'aorta', 'inferior vena cava', 'right adrenal gland', 'left adrenal gland', 'gallbladder', 'esophagus', 'stomach', 'duodenum', 'left kidney' ]
+  margin: 20
+  num_worker: 3
+  batch_size: 1
+
+coarse_model:
+  is_test_time_augment: False
+  is_cuda: True
+  is_fp16: True
+  semi_supervised: False
+  meta_architecture: 'UNet'
+  area_least: 100
+  keep_topk: 30
+  num_class: 13
+  num_depth: 4
+  activation: 'sigmoid'
+  num_blocks: [ 2, 2, 2, 2 ]
+  num_channel: [ 16, 32, 64, 128, 256 ]
+  decoder_num_block: 1
+  auxiliary_task: False
+  auxiliary_class: 1
+  encoder_conv_block: 'ResFourLayerConvBlock'
+  decoder_conv_block: 'ResTwoLayerConvBlock'
+  context_block: None
+  input_size: [ 160, 160, 160 ]
+  clip_window: [ -500, 500 ]
+  is_preprocess: False
+  is_postprocess: False
+  ahead_resample: False
+  is_remove_small_objects: True
+  delay_resample: False
+  is_dynamic_empty_cache: True
+  weight_path: '/home/zhangfan/Proxima/seg_framework/flare22_models/semi_coarse_model/models/best_model.pt'
+
+fine_model:
+  is_test_time_augment: False
+  is_cuda: True
+  is_fp16: True
+  semi_supervised: False
+  meta_architecture: 'UNet'
+  area_least: 100
+  keep_topk: 30
+  num_class: 13
+  num_depth: 4
+  activation: 'sigmoid'
+  num_blocks: [ 2, 2, 2, 2 ]
+  num_channel: [ 16, 32, 64, 128, 256 ]
+  decoder_num_block: 1
+  auxiliary_task: False
+  auxiliary_class: 1
+  encoder_conv_block: 'ResFourLayerConvBlock'
+  decoder_conv_block: 'ResTwoLayerConvBlock'
+  context_block: None
+  input_size: [ 160, 192, 192 ]
+  clip_window: [ -500, 500 ]
+  is_preprocess: True
+  is_postprocess: True
+  ahead_resample: False
+  is_remove_small_objects: False
+  delay_resample: False
+  is_dynamic_empty_cache: True
+  weight_path: '/home/zhangfan/Proxima/seg_framework/flare22_models/semi_fine_model/models/best_model.pt'
+
+part_model:
+  is_test_time_augment: False
+  is_cuda: True
+  is_fp16: True
+  semi_supervised: False
+  meta_architecture: 'UNet'
+  area_least: 1000
+  keep_topk: 1
+  num_class: 5
+  num_depth: 4
+  activation: 'sigmoid'
+  num_blocks: [ 2, 2, 2, 2 ]
+  num_channel: [ 16, 32, 64, 128, 256 ]
+  decoder_num_block: 1
+  auxiliary_task: False
+  auxiliary_class: 1
+  encoder_conv_block: 'ResFourLayerConvBlock'
+  decoder_conv_block: 'ResTwoLayerConvBlock'
+  context_block: None
+  input_size: [ 160, 192, 192 ]
+  clip_window: [ -500, 500 ]
+  is_preprocess: False
+  is_postprocess: False
+  ahead_resample: True
+  is_remove_small_objects: True
+  delay_resample: False
+  is_dynamic_empty_cache: True
+  weight_path: None
+
+testing:
+  save_dir: '/data/zhangfan/FLARE2022/results/test_mask/'
+  resample_mode: 0
+  multi_stage: 2
+  is_compress_mask: True
+  is_save_coarse_mask: False
+  remove_background: True

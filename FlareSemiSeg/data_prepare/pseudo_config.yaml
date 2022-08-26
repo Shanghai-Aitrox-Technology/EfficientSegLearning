@@ -1,0 +1,23 @@
+ENVIRONMENT:
+  DATA_BASE_DIR: '../raw_data/'
+
+DATA_PREPARE:
+  ALL_SERIES_IDS_TXT: 'pseudo_mask/iters0_reliable_score/reliable_series.txt'
+  BAD_CASE_SERIES_IDS_TXT: None
+  IMAGE_DIR: 'crop_unlabeled_image/'
+  MASK_DIR: 'pseudo_mask/iters0_mask/'
+  IMAGE_SUFFIX: '.nii.gz'
+  MASK_SUFFIX: '.nii.gz'
+  TRAIN_SERIES_IDS_TXT: None
+  VAL_SERIES_IDS_TXT: None
+  OUT_DIR: '../gen_data/pseudo_crop_train_iters0/'
+  COARSE_MASK_LABEL: 13
+  FINE_MASK_LABEL: 13
+  PART_LABEL: [7, 8, 9, 10, 12]
+  EXTEND_SIZE: 40
+  VAL_RATIO: 0
+  WINDOW_LEVEL: [-500, 500]
+  OUT_COARSE_SIZE: [176, 176, 176]
+  OUT_FINE_SIZE: [176, 212, 212]
+  OUT_PART_SIZE: [176, 212, 212]
+  IS_SPLIT_5FOLD: False

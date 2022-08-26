@@ -1,0 +1,62 @@
+env:
+  num_gpu: 1
+  smoke_test: False
+  is_apex_train: True
+  is_distributed_train: True
+  save_dir: './output'
+  dist_url: 'tcp://127.0.0.3:23457'
+  exp_name: 'flare_full_fine_seg'
+
+data_loader:
+  stage: 2
+  batch_size: 1
+  num_worker: 3
+  labeled_batch: 1
+  semi_dataset: False
+  train_db: '../gen_data/full_crop_train/db/seg_train_fold_1'
+  val_db: '../gen_data/full_crop_train/db/seg_val_fold_1'
+  bad_case_file: None
+  bad_case_augment_times: 3
+  window_level: [ -500, 500 ]
+  label_index: [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 ]
+  label_num: [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ]
+  label_name: [ 'liver', 'right kidney', 'spleen', 'pancreas', 'aorta', 'inferior vena cava', 'right adrenal gland', 'left adrenal gland', 'gallbladder', 'esophagus', 'stomach', 'duodenum', 'left kidney' ]
+
+data_augment:
+  enable: True
+
+slover:
+  lr: 0.001
+  start_epoch: 0
+  total_epoch: 1000
+  optimizer: 'adamW'
+  save_frequency: 3
+  save_checkpoints: True
+  l2_penalty: 0.00001
+  lr_schedule: 'stepLR'
+  loss: ['DiceLoss']
+  loss_weight: [1]
+  metric: 'dice'
+
+model:
+  semi_supervised: False
+  meta_architecture: 'UNet'
+  num_class: 13
+  num_depth: 4
+  activation: 'sigmoid'
+  num_blocks: [ 2, 2, 2, 2 ]
+  num_channel: [ 16, 32, 64, 128, 256 ]
+  decoder_num_block: 1
+  auxiliary_task: False
+  auxiliary_class: 1
+  encoder_conv_block: 'ResFourLayerConvBlock'
+  decoder_conv_block: 'ResTwoLayerConvBlock'
+  context_block: None
+  input_size: [ 160, 192, 192 ]
+  clip_window: [ -500, 500 ]
+  is_preprocess: False
+  is_postprocess: False
+  is_dynamic_empty_cache: True
+  weight_path: None
+  is_refine: False
+  refine_epoch: 20
